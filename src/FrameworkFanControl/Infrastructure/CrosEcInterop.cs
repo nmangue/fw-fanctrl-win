@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
 
-namespace FrameworkFanControl.CrosEc;
+namespace FrameworkFanControl.Infrastructure;
 
 internal static class CrosEcConstants
 {

@@ -1,10 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace FrameworkFanControl.CrosEc;
+namespace FrameworkFanControl.Infrastructure;
 
 internal class StructWrapper<TStruct> : IDisposable
 {
-    public IntPtr Ptr { get; private set; }
+    public nint Ptr { get; private set; }
 
     public StructWrapper(TStruct obj)
     {
@@ -15,25 +15,25 @@ internal class StructWrapper<TStruct> : IDisposable
         }
         else
         {
-            Ptr = IntPtr.Zero;
+            Ptr = nint.Zero;
         }
     }
 
     ~StructWrapper()
     {
-        if (Ptr != IntPtr.Zero)
+        if (Ptr != nint.Zero)
         {
             Marshal.FreeHGlobal(Ptr);
-            Ptr = IntPtr.Zero;
+            Ptr = nint.Zero;
         }
     }
 
     public void Dispose()
     {
         Marshal.FreeHGlobal(Ptr);
-        Ptr = IntPtr.Zero;
+        Ptr = nint.Zero;
         GC.SuppressFinalize(this);
     }
 
-    public static implicit operator IntPtr(StructWrapper<TStruct> w) => w.Ptr;
+    public static implicit operator nint(StructWrapper<TStruct> w) => w.Ptr;
 }

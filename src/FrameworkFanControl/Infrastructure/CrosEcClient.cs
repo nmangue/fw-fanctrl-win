@@ -2,9 +2,9 @@
 using System.Buffers.Binary;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using static FrameworkFanControl.CrosEc.CrosEcConstants;
+using static FrameworkFanControl.Infrastructure.CrosEcConstants;
 
-namespace FrameworkFanControl.CrosEc;
+namespace FrameworkFanControl.Infrastructure;
 
 public sealed class CrosEcClient : IDisposable
 {
@@ -35,6 +35,15 @@ public sealed class CrosEcClient : IDisposable
     public void SendOffCommand()
     {
         SendCommand(EC_CMD_PWM_SET_FAN_DUTY, 0);
+    }
+
+    public byte[] SendCommand(
+        uint command,
+        bool outValue,
+        uint version = 0)
+    {
+        Span<byte> outPayload = [(byte) Convert.ToInt32(outValue)];
+        return SendCommand(command, outPayload, outPayload.Length, version);
     }
 
     public byte[] SendCommand(
