@@ -1,6 +1,6 @@
 ﻿public interface IFanController : IDisposable
 {
-    void SetFanDuty(Percentage speed);
+	void SetFanDuty(Percentage speed);
 
-    void ActivateAutoFanContrl();
+	void ActivateAutoFanContrl();
 }

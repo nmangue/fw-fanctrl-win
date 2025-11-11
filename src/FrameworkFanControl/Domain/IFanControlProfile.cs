@@ -1,4 +1,4 @@
 ﻿public interface IFanControlProfile
 {
-    Percentage Get(ComputerState state);
+	Percentage Get(ComputerState state);
 }

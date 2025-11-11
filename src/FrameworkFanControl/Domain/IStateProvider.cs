@@ -1,4 +1,4 @@
 ﻿public interface IStateProvider : IDisposable
 {
-    ComputerState ReadState();
+	ComputerState ReadState();
 }
