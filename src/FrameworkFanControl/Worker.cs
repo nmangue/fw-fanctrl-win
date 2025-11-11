@@ -1,29 +1,20 @@
-using FrameworkFanControl.Infrastructure;
-
 namespace FrameworkFanControl;
 
-public class Worker(ILogger<Worker> logger) : BackgroundService
+public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using IStateProvider _stateProvider = new MovingAveragedStateProvider(
-            new LhmStateProvider(), 
-            4);
-        IFanControlProfile _fanProfile = new LinearFanControlCurve(new Dictionary<float, Percentage>
-        {
-            { 45f, 00 },
-            { 55f, 10 },
-            { 65f, 30 },
-            { 70f, 40 },
-            { 75f, 80 },
-            { 85f, 100 }
-        });
-        using IFanController _fanController = new CrosEcFanController();
 
         try
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+                using var scope = serviceScopeFactory.CreateScope();
+
+                var _stateProvider = scope.ServiceProvider.GetRequiredService<IStateProvider>();
+                var _fanProfile = scope.ServiceProvider.GetRequiredService<IFanControlProfile>();
+                var _fanController = scope.ServiceProvider.GetRequiredService<IFanController>();
+
                 if (logger.IsEnabled(LogLevel.Information))
                 {
                     logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
@@ -58,6 +49,8 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
         finally
         {
             logger.LogInformation("Restoring automatic fan control");
+            using var scope = serviceScopeFactory.CreateScope();
+            var _fanController = scope.ServiceProvider.GetRequiredService<IFanController>();
             _fanController.ActivateAutoFanContrl();
         }
 
