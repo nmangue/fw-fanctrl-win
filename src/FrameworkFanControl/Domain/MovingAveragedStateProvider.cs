@@ -11,11 +11,6 @@
         _states = new Queue<ComputerState>(width);
     }
 
-    public void Dispose()
-    {
-        _baseProvider.Dispose();
-    }
-
     public ComputerState ReadState()
     {
         var state = _baseProvider.ReadState();
@@ -26,5 +21,10 @@
         _states.Enqueue(state);
 
         return _states.Average();
+    }
+
+    public void Dispose()
+    {
+        // Nothing to do
     }
 }
