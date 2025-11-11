@@ -1,14 +1,14 @@
 ﻿public class MovingAveragedStateProvider : IStateProvider
 {
     private readonly IStateProvider _baseProvider;
-    private readonly int _size;
+    private readonly int _width;
     private readonly Queue<ComputerState> _states;
 
-    public MovingAveragedStateProvider(IStateProvider baseProvider, int size)
+    public MovingAveragedStateProvider(IStateProvider baseProvider, int width)
     {
         _baseProvider = baseProvider;
-        _size = size;
-        _states = new Queue<ComputerState>(size);
+        _width = Math.Max(1, width);
+        _states = new Queue<ComputerState>(width);
     }
 
     public void Dispose()
@@ -19,7 +19,7 @@
     public ComputerState ReadState()
     {
         var state = _baseProvider.ReadState();
-        while (_states.Count >= _size)
+        while (_states.Count >= _width)
         {
             _states.Dequeue();
         }
