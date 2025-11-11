@@ -6,7 +6,9 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using IStateProvider _stateProvider = new LhmStateProvider();
+        using IStateProvider _stateProvider = new MovingAveragedStateProvider(
+            new LhmStateProvider(), 
+            4);
         IFanControlProfile _fanProfile = new LinearFanControlCurve(new Dictionary<float, Percentage>
         {
             { 50f, 00 },
@@ -30,7 +32,7 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
                 logger.LogInformation("Setting speed to {speed}", fanSpeed);
                 _fanController.SetFanDuty(fanSpeed);
 
-                await Task.Delay(5000, stoppingToken);
+                await Task.Delay(10_000, stoppingToken);
             }
         }
         finally
