@@ -17,13 +17,15 @@ public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> lo
 				var _fanProfile = scope.ServiceProvider.GetRequiredService<IFanControlProfile>();
 				var _fanController = scope.ServiceProvider.GetRequiredService<IFanController>();
 
-				logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-
 				var state = _stateProvider.ReadState();
-				logger.LogInformation("CPU Max at {temp}°C", state.CoreMaxTemp);
 
 				var fanSpeed = _fanProfile.Get(state);
-				logger.LogInformation("Setting speed to {speed}", fanSpeed);
+
+				logger.LogInformation(
+					"CPU Max at {Temp}°C, Setting fan duty to {Speed}",
+					state.CoreMaxTemp,
+					fanSpeed
+				);
 
 				_fanController.SetFanDuty(fanSpeed);
 
