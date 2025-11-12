@@ -1,6 +1,7 @@
 using FrameworkFanControl;
 using FrameworkFanControl.Infrastructure;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -9,6 +10,11 @@ builder
 	.Bind(builder.Configuration.GetSection(FanControlSettings.SectionName))
 	.ValidateDataAnnotations()
 	.ValidateOnStart();
+
+builder.Services.AddSerilog(config =>
+{
+	config.ReadFrom.Configuration(builder.Configuration);
+});
 
 builder.Services.AddWindowsService(options =>
 {
