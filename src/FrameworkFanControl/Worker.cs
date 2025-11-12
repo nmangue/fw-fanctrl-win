@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace FrameworkFanControl;
 
 public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> logger)
@@ -15,18 +17,20 @@ public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> lo
 				var _fanProfile = scope.ServiceProvider.GetRequiredService<IFanControlProfile>();
 				var _fanController = scope.ServiceProvider.GetRequiredService<IFanController>();
 
-				if (logger.IsEnabled(LogLevel.Information))
-				{
-					logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-				}
+				logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
 				var state = _stateProvider.ReadState();
 				logger.LogInformation("CPU Max at {temp}°C", state.CoreMaxTemp);
+
 				var fanSpeed = _fanProfile.Get(state);
 				logger.LogInformation("Setting speed to {speed}", fanSpeed);
+
 				_fanController.SetFanDuty(fanSpeed);
 
-				await Task.Delay(10_000, stoppingToken);
+				var settings = scope
+					.ServiceProvider.GetRequiredService<IOptions<FanControlSettings>>()
+					.Value;
+				await Task.Delay(settings.UpdateInterval, stoppingToken);
 			}
 		}
 		catch (TaskCanceledException)
