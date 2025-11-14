@@ -1,4 +1,4 @@
-﻿using System.Buffers.Binary;
+using System.Buffers.Binary;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
@@ -110,7 +110,7 @@ public sealed class CrosEcClient : IDisposable
 
 		if (cmd.result != 0)
 		{
-			throw new Exception("EC Error");
+			throw new Exception($"EC Error ({cmd.result})");
 		}
 
 		return bytesReturned;
