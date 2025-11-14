@@ -37,7 +37,13 @@ builder.Services.AddSingleton<IStateProvider>(sp =>
 	return new MovingAveragedStateProvider(baseImplementation, settings.MovingAverageWidth, logger);
 });
 
-builder.Services.AddSingleton<IFanController, CrosEcFanController>();
+builder.Services.AddSingleton<CrosEcFanController>();
+builder.Services.AddSingleton<IFanController>(sp =>
+{
+	var baseImplementation = sp.GetRequiredService<CrosEcFanController>();
+	var logger = sp.GetRequiredService<ILogger<DebounceFanController>>();
+	return new DebounceFanController(baseImplementation, logger);
+});
 
 builder.Services.AddHostedService<Worker>();
 
