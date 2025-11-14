@@ -23,12 +23,6 @@ public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> lo
 
 				var fanSpeed = _fanProfile.Get(state);
 
-				logger.LogInformation(
-					"CPU Max at {Temp}°C, Setting fan duty to {Speed}",
-					state.CoreMaxTemp,
-					fanSpeed
-				);
-
 				_fanController.SetFanDuty(fanSpeed);
 
 				var settings = scope
@@ -56,7 +50,6 @@ public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> lo
 		}
 		finally
 		{
-			logger.LogInformation("Restoring automatic fan control");
 			using var scope = serviceScopeFactory.CreateScope();
 			var _fanController = scope.ServiceProvider.GetRequiredService<IFanController>();
 			_fanController.ActivateAutoFanContrl();

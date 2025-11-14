@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using LibreHardwareMonitor.Hardware;
 
@@ -9,8 +9,9 @@ public class LhmStateProvider : IStateProvider
 	private readonly ISensor? _coreMaxTempSensor;
 	private readonly ISensor? _coreAvgTempSensor;
 	private readonly IList<ISensor> _coreTempSensors;
+	private readonly ILogger<LhmStateProvider>? _logger;
 
-	public LhmStateProvider()
+	public LhmStateProvider(ILogger<LhmStateProvider>? logger = null)
 	{
 		_computer = new Computer { IsCpuEnabled = true };
 		_computer.Open();
@@ -38,6 +39,8 @@ public class LhmStateProvider : IStateProvider
 				_coreTempSensors.Add(sensor);
 			}
 		}
+
+		_logger = logger;
 	}
 
 	public ComputerState ReadState()
@@ -48,6 +51,13 @@ public class LhmStateProvider : IStateProvider
 		var coreTemps = ImmutableList<float>.Empty.AddRange(
 			_coreTempSensors.Select(s => s.Value ?? float.NaN)
 		);
+
+		_logger?.LogInformation(
+			"Real-time CPU temperatures: Core Max = {CoreMax}°C, Core Avg = {CoreAvg}°C",
+			coreMaxTemp,
+			coreAvgTemp
+		);
+
 		return new ComputerState(coreMaxTemp, coreAvgTemp, coreTemps);
 	}
 
