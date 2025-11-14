@@ -1,4 +1,6 @@
-﻿public class MovingAveragedStateProvider : IStateProvider
+using Microsoft.Win32;
+
+public class MovingAveragedStateProvider : IStateProvider
 {
 	private readonly IStateProvider _baseProvider;
 	private readonly int _width;
@@ -14,6 +16,9 @@
 		_baseProvider = baseProvider;
 		_width = Math.Max(1, width);
 		_states = new Queue<ComputerState>(width);
+		_logger = logger;
+
+		SystemEvents.PowerModeChanged += OnPowerChange;
 	}
 
 	public ComputerState ReadState()
@@ -25,11 +30,33 @@
 		}
 		_states.Enqueue(state);
 
-		return _states.Average();
+		var result = _states.Average();
+
+		_logger?.LogInformation(
+			"Moving average CPU temperatures: Core Max = {CoreMax}°C, Core Avg = {CoreAvg}°C",
+			result.CoreMaxTemp,
+			result.CoreAvgTemp
+		);
+
+		return result;
+	}
+
+	private void OnPowerChange(object s, PowerModeChangedEventArgs e)
+	{
+		switch (e.Mode)
+		{
+			case PowerModes.Resume:
+				_logger?.LogInformation("Resetting moving average state");
+				_states.Clear();
+				break;
+			case PowerModes.Suspend:
+				// Nothing to do yet
+				break;
+		}
 	}
 
 	public void Dispose()
 	{
-		// Nothing to do
+		SystemEvents.PowerModeChanged -= OnPowerChange;
 	}
 }
