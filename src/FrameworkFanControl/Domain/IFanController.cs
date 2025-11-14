@@ -1,4 +1,4 @@
-﻿public interface IFanController : IDisposable
+public interface IFanController : IDisposable
 {
 	void SetFanDuty(Percentage speed);
 

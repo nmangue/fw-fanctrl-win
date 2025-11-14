@@ -1,4 +1,4 @@
-﻿public class LinearFanControlCurve : IFanControlProfile
+public class LinearFanControlCurve : IFanControlProfile
 {
 	private static readonly Percentage DefaultPercentage = new(100);
 	private readonly SortedDictionary<float, Percentage> _points;
@@ -10,7 +10,7 @@
 
 	public Percentage Get(ComputerState state)
 	{
-		var currentTemp = state.CoreMaxTemp;
+		var currentTemp = state.CoreAvgTemp;
 
 		for (var i = 0; i < _points.Count; i++)
 		{
