@@ -29,11 +29,12 @@ builder.Services.AddScoped<IFanControlProfile>(sp =>
 });
 
 builder.Services.AddSingleton<LhmStateProvider>();
-builder.Services.AddScoped<IStateProvider>(sp =>
+builder.Services.AddSingleton<IStateProvider>(sp =>
 {
-	var settings = sp.GetRequiredService<IOptionsSnapshot<FanControlSettings>>().Value;
+	var settings = sp.GetRequiredService<IOptions<FanControlSettings>>().Value;
 	var baseImplementation = sp.GetRequiredService<LhmStateProvider>();
-	return new MovingAveragedStateProvider(baseImplementation, settings.MovingAverageWidth);
+	var logger = sp.GetRequiredService<ILogger<MovingAveragedStateProvider>>();
+	return new MovingAveragedStateProvider(baseImplementation, settings.MovingAverageWidth, logger);
 });
 
 builder.Services.AddSingleton<IFanController, CrosEcFanController>();

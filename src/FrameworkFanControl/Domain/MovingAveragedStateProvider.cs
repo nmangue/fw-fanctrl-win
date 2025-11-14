@@ -3,8 +3,13 @@
 	private readonly IStateProvider _baseProvider;
 	private readonly int _width;
 	private readonly Queue<ComputerState> _states;
+	private readonly ILogger<MovingAveragedStateProvider>? _logger;
 
-	public MovingAveragedStateProvider(IStateProvider baseProvider, int width)
+	public MovingAveragedStateProvider(
+		IStateProvider baseProvider,
+		int width,
+		ILogger<MovingAveragedStateProvider>? logger
+	)
 	{
 		_baseProvider = baseProvider;
 		_width = Math.Max(1, width);
