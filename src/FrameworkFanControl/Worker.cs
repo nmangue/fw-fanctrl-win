@@ -32,7 +32,7 @@ public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> lo
 				_fanController.SetFanDuty(fanSpeed);
 
 				var settings = scope
-					.ServiceProvider.GetRequiredService<IOptions<FanControlSettings>>()
+					.ServiceProvider.GetRequiredService<IOptionsSnapshot<FanControlSettings>>()
 					.Value;
 				await Task.Delay(settings.UpdateInterval, stoppingToken);
 			}
