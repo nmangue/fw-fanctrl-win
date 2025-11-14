@@ -7,6 +7,8 @@ public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> lo
 {
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
+		var exitCode = 0;
+
 		try
 		{
 			while (!stoppingToken.IsCancellationRequested)
@@ -50,7 +52,7 @@ public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> lo
 			// Terminates this process and returns an exit code to the operating system.
 			// In order for the Windows Service Management system to leverage configured
 			// recovery options, we need to terminate the process with a non-zero exit code.
-			Environment.Exit(1);
+			exitCode = 1;
 		}
 		finally
 		{
@@ -58,6 +60,11 @@ public class Worker(IServiceScopeFactory serviceScopeFactory, ILogger<Worker> lo
 			using var scope = serviceScopeFactory.CreateScope();
 			var _fanController = scope.ServiceProvider.GetRequiredService<IFanController>();
 			_fanController.ActivateAutoFanContrl();
+		}
+
+		if (exitCode != 0)
+		{
+			Environment.Exit(exitCode);
 		}
 	}
 }
