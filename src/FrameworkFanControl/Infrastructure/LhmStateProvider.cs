@@ -3,6 +3,8 @@ using System.Text.RegularExpressions;
 using FrameworkFanControl.Domain;
 using LibreHardwareMonitor.Hardware;
 
+namespace FrameworkFanControl.Infrastructure;
+
 public class LhmStateProvider : IStateProvider
 {
 	private readonly Computer _computer;
