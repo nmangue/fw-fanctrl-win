@@ -110,7 +110,7 @@ public sealed class CrosEcClient : IDisposable
 
 		if (cmd.result != 0)
 		{
-			throw new Exception($"EC Error ({cmd.result})");
+			throw new CrosEcException(cmd.result);
 		}
 
 		return bytesReturned;
