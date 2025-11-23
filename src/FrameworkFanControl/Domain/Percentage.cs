@@ -1,4 +1,6 @@
-﻿public sealed record Percentage
+namespace FrameworkFanControl.Domain;
+
+public sealed record Percentage
 {
 	public int Value { get; }
 

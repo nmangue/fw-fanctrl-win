@@ -1,4 +1,5 @@
 using FrameworkFanControl;
+using FrameworkFanControl.Domain;
 using FrameworkFanControl.Infrastructure;
 using Microsoft.Extensions.Options;
 using Serilog;

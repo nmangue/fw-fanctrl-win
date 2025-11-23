@@ -1,5 +1,7 @@
 using Microsoft.Win32;
 
+namespace FrameworkFanControl.Domain;
+
 public class MovingAveragedStateProvider : IStateProvider
 {
 	private readonly IStateProvider _baseProvider;

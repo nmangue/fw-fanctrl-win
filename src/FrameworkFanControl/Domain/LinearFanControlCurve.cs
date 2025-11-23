@@ -1,3 +1,5 @@
+namespace FrameworkFanControl.Domain;
+
 public class LinearFanControlCurve : IFanControlProfile
 {
 	private static readonly Percentage DefaultPercentage = new(100);

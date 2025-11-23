@@ -1,6 +1,8 @@
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using LibreHardwareMonitor.Hardware;
+using FrameworkFanControl.Domain;
+
 
 public class LhmStateProvider : IStateProvider
 {

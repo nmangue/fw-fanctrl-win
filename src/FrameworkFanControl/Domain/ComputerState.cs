@@ -1,4 +1,6 @@
-﻿public record ComputerState(float CoreMaxTemp, float CoreAvgTemp, IReadOnlyList<float> CoreTemps);
+namespace FrameworkFanControl.Domain;
+
+public record ComputerState(float CoreMaxTemp, float CoreAvgTemp, IReadOnlyList<float> CoreTemps);
 
 public static class ComputerStateExtension
 {

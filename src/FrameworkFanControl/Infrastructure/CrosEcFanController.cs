@@ -1,3 +1,5 @@
+using FrameworkFanControl.Domain;
+
 namespace FrameworkFanControl.Infrastructure;
 
 public class CrosEcFanController : IFanController

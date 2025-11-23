@@ -1,3 +1,4 @@
+using FrameworkFanControl.Domain;
 using NFluent;
 
 namespace FrameworkFanControl.Tests;
