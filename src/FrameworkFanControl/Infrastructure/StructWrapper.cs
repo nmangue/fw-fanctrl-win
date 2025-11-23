@@ -1,14 +1,15 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 namespace FrameworkFanControl.Infrastructure;
 
-internal class StructWrapper<TStruct> : IDisposable
+internal sealed class StructWrapper<TStruct> : IDisposable
+	where TStruct : struct
 {
 	public nint Ptr { get; private set; }
 
-	public StructWrapper(TStruct obj)
+	public StructWrapper(TStruct? obj)
 	{
-		if (obj != null)
+		if (obj is not null)
 		{
 			Ptr = Marshal.AllocHGlobal(Marshal.SizeOf(obj));
 			Marshal.StructureToPtr(obj, Ptr, false);
