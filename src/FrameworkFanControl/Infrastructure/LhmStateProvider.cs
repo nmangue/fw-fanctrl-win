@@ -5,7 +5,7 @@ using LibreHardwareMonitor.Hardware;
 
 namespace FrameworkFanControl.Infrastructure;
 
-public class LhmStateProvider : IStateProvider
+public sealed class LhmStateProvider : IStateProvider
 {
 	private readonly Computer _computer;
 	private readonly IHardware _cpu;

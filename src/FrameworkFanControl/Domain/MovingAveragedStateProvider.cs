@@ -2,7 +2,7 @@ using Microsoft.Win32;
 
 namespace FrameworkFanControl.Domain;
 
-public class MovingAveragedStateProvider : IStateProvider
+public sealed class MovingAveragedStateProvider : IStateProvider
 {
 	private readonly IStateProvider _baseProvider;
 	private readonly int _width;

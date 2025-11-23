@@ -2,7 +2,7 @@ using FrameworkFanControl.Domain;
 
 namespace FrameworkFanControl.Infrastructure;
 
-public class CrosEcFanController : IFanController
+public sealed class CrosEcFanController : IFanController
 {
 	private readonly CrosEcClient _client;
 	private readonly ILogger<CrosEcFanController> _logger;

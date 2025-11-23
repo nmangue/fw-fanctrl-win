@@ -2,7 +2,7 @@ using Microsoft.Win32;
 
 namespace FrameworkFanControl.Domain;
 
-public class DebounceFanController : IFanController
+public sealed class DebounceFanController : IFanController
 {
 	private readonly IFanController baseImplementation;
 	private readonly ILogger<DebounceFanController> logger;
